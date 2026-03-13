@@ -43,7 +43,7 @@ def _get_db():
                 return firestore.client()
 
         creds_path = os.getenv("FIREBASE_CREDENTIALS_PATH", "../shared/config/firebase_config.json")
-        project_id = os.getenv("FIREBASE_PROJECT_ID", "box-detection-system")
+        project_id = os.getenv("FIREBASE_PROJECT_ID", "boxdectection")
 
         abs_creds = os.path.abspath(creds_path)
         if not os.path.exists(abs_creds):
@@ -168,6 +168,15 @@ def _generate_pdf(session: Dict[str, Any]) -> bytes:
     boxes = session.get("total_boxes_detected", 0)
     peak = session.get("peak_count", 0)
     avg = session.get("average_boxes_per_frame", 0.0)
+
+    # Ensure numeric types for formatting
+    try:
+        avg = float(avg) if avg is not None else 0.0
+        boxes = int(boxes) if boxes is not None else 0
+        frames = int(frames) if frames is not None else 0
+        peak = int(peak) if peak is not None else 0
+    except (ValueError, TypeError):
+        avg, boxes, frames, peak = 0.0, 0, 0, 0
 
     data = [
         ["Metric", "Result"],
