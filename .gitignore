@@ -1,0 +1,48 @@
+# ─── Python ──────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# ─── Environment ─────────────────────────────────────────────────────────────
+.env
+.env.local
+*.env
+
+# ─── Model Weights ───────────────────────────────────────────────────────────
+*.pt
+*.onnx
+*.engine
+backend/weights/box_detection_model.pt
+
+# ─── Firebase Credentials ────────────────────────────────────────────────────
+shared/config/firebase_config.json
+
+# ─── Node / Next.js ──────────────────────────────────────────────────────────
+node_modules/
+.next/
+out/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ─── OS / Editor ─────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ─── Temp / Uploads ──────────────────────────────────────────────────────────
+tmp/
+uploads/
+*.mp4
+*.avi
+*.mov

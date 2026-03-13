@@ -1,0 +1,38 @@
+[
+  {
+    "session_id": "47423e60-57af-4a31-8fbc-4149dbcf6dc9",
+    "video_source": "video_2.mp4",
+    "started_at": "2026-03-13T06:54:48.159360+00:00",
+    "frames_processed": 181,
+    "total_boxes_detected": 2,
+    "average_boxes_per_frame": 0.01,
+    "peak_count": 1
+  },
+  {
+    "session_id": "e154407d-7731-47a2-8e5e-4e8a519685b4",
+    "video_source": "WhatsApp Video 2026-03-12 at 10.45.55 PM.mp4",
+    "started_at": "2026-03-13T06:51:22.212008+00:00",
+    "frames_processed": 122,
+    "total_boxes_detected": 58,
+    "average_boxes_per_frame": 0.48,
+    "peak_count": 3
+  },
+  {
+    "session_id": "e9897771-b276-435a-a03f-949283cec7a9",
+    "video_source": "WhatsApp Video 2026-03-12 at 10.45.55 PM.mp4",
+    "started_at": "2026-03-13T06:19:01.796608+00:00",
+    "frames_processed": 122,
+    "total_boxes_detected": 58,
+    "average_boxes_per_frame": 0.48,
+    "peak_count": 3
+  },
+  {
+    "session_id": "d1e2a8b9-a873-489d-8083-3f4105e33c0a",
+    "video_source": "WhatsApp Video 2026-03-12 at 10.45.55 PM.mp4",
+    "started_at": "2026-03-13T06:18:51.267737+00:00",
+    "frames_processed": 122,
+    "total_boxes_detected": 58,
+    "average_boxes_per_frame": 0.48,
+    "peak_count": 3
+  }
+]

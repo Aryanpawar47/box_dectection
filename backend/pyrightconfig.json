@@ -1,0 +1,9 @@
+{
+    "venvPath": "C:\\Users\\Aryan\\Desktop\\PBS\\new_box_detection\\boxDetectionSystem-main\\backend",
+    "venv": ".venv",
+    "pythonVersion": "3.11",
+    "typeCheckingMode": "off",
+    "extraPaths": [
+        "C:\\Users\\Aryan\\Desktop\\PBS\\new_box_detection\\boxDetectionSystem-main\\backend"
+    ]
+}

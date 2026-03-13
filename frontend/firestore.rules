@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allows our React Frontend to Read/Write specifically to the box detection sessions 
+    match /detection_sessions/{session} {
+      allow read, write: if true;
+    }
+    
+    // Default rule for all other docs
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
