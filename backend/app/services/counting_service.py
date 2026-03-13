@@ -52,6 +52,21 @@ def _get_db():
         import firebase_admin
         from firebase_admin import credentials, firestore
 
+        # Check if we're running on Streamlit Cloud
+        is_streamlit = "streamlit" in sys.modules
+        
+        if is_streamlit:
+            import streamlit as st
+            if "firebase" in st.secrets:
+                if not firebase_admin._apps:
+                    # Load from secrets
+                    cred_dict = dict(st.secrets["firebase"])
+                    cred = credentials.Certificate(cred_dict)
+                    firebase_admin.initialize_app(cred)
+                _db = firestore.client()
+                _firebase_ok = True
+                return _db
+
         creds_path = os.getenv("FIREBASE_CREDENTIALS_PATH", "../shared/config/firebase_config.json")
         project_id = os.getenv("FIREBASE_PROJECT_ID")
 
@@ -66,13 +81,13 @@ def _get_db():
             firebase_admin.initialize_app(cred, {"projectId": project_id})
 
         _db = firestore.client()
-        # Probe with a tiny read to confirm API is actually enabled
+        # Probe with a tiny read
         list(_db.collection("detection_sessions").limit(1).stream())
         _firebase_ok = True
         print("[Firebase] ✅ Firestore connected successfully.")
     except Exception as e:
         print(f"[Firebase] ❌ Could not connect to Firestore — {e}")
-        print("[Firebase] ⚠️  Falling back to local JSON storage (backend/data/sessions.json)")
+        # Only fallback if not on streamlit or if specifically failed
         _firebase_ok = False
         _db = None
 

@@ -28,6 +28,19 @@ def _get_db():
         import firebase_admin
         from firebase_admin import credentials, firestore
 
+        # Check if we're running on Streamlit Cloud
+        is_streamlit = "streamlit" in sys.modules
+        
+        if is_streamlit:
+            import streamlit as st
+            if "firebase" in st.secrets:
+                if not firebase_admin._apps:
+                    # Load from secrets
+                    cred_dict = dict(st.secrets["firebase"])
+                    cred = credentials.Certificate(cred_dict)
+                    firebase_admin.initialize_app(cred)
+                return firestore.client()
+
         creds_path = os.getenv("FIREBASE_CREDENTIALS_PATH", "../shared/config/firebase_config.json")
         project_id = os.getenv("FIREBASE_PROJECT_ID", "box-detection-system")
 
