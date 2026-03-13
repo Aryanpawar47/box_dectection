@@ -53,7 +53,7 @@ export default function InventoryAlert() {
 
     // Sync local input state with db when session loads/changes
     useEffect(() => {
-        if (session && session.expected_count !== undefined) {
+        if (session && session.expected_count !== undefined && session.expected_count !== null) {
             setLocalExpected(session.expected_count.toString());
         }
     }, [session?.expected_count, session?.session_id]);
@@ -83,8 +83,8 @@ export default function InventoryAlert() {
         return <div className="text-slate-500 bg-slate-900/40 p-6 rounded-2xl border border-slate-800">No active detection sessions found in database. Run a detection first.</div>;
     }
 
-    const hasMismatch = session.expected_count !== undefined && session.expected_count !== session.total_boxes_detected;
-    const isMatched = session.expected_count !== undefined && session.expected_count === session.total_boxes_detected;
+    const hasMismatch = session.expected_count !== undefined && session.expected_count !== null && session.expected_count !== session.total_boxes_detected;
+    const isMatched = session.expected_count !== undefined && session.expected_count !== null && session.expected_count === session.total_boxes_detected;
 
     return (
         <div className="space-y-6 max-w-xl">
