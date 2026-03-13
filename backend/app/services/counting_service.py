@@ -5,6 +5,7 @@ Falls back to local JSON file storage if Firestore is unavailable.
 
 import json
 import os
+import sys
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path

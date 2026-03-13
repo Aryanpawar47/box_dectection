@@ -5,6 +5,7 @@ Generates a PDF report for a detection session using reportlab.
 
 import io
 import os
+import sys
 import json
 from datetime import datetime, timezone
 from typing import Any, Dict, Optional
