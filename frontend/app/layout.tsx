@@ -16,7 +16,9 @@ export const metadata: Metadata = {
 };
 
 const navLinks = [
+  { href: "/live", label: "Live Conveyor", icon: "🔴", badge: "LIVE" },
   { href: "/dashboard", label: "Dashboard", icon: "🖥️" },
+  { href: "/admin", label: "Admin & Catalog", icon: "🛡️" },
   { href: "/upload", label: "Upload & Detect", icon: "📤" },
   { href: "/inventory-mismatch", label: "Inventory Alert", icon: "⚠️" },
   { href: "/confidence", label: "Confidence Control", icon: "🎯" },
@@ -24,6 +26,7 @@ const navLinks = [
   { href: "/reports", label: "Detection Reports", icon: "📊" },
   { href: "/comparison", label: "Session Comparison", icon: "📈" },
   { href: "/anomaly", label: "Anomaly Alerts", icon: "🧠" },
+  { href: "/login", label: "Auth / Login", icon: "🔑" },
 ];
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -43,14 +46,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
           {/* Nav */}
           <nav className="flex-1 px-3 py-4 space-y-1">
-            {navLinks.map(({ href, label, icon }) => (
+            {navLinks.map(({ href, label, icon, badge }) => (
               <Link
                 key={href}
                 href={href}
-                className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-all duration-200 group"
+                className="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-all duration-200 group"
               >
-                <span className="text-base group-hover:scale-110 transition-transform">{icon}</span>
-                {label}
+                <div className="flex items-center gap-3">
+                  <span className="text-base group-hover:scale-110 transition-transform">{icon}</span>
+                  <span>{label}</span>
+                </div>
+                {badge && (
+                  <span className="px-1.5 py-0.5 text-[10px] font-extrabold bg-red-500 text-white rounded-md animate-pulse">
+                    {badge}
+                  </span>
+                )}
               </Link>
             ))}
           </nav>

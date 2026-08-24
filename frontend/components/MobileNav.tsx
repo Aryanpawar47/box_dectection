@@ -7,14 +7,12 @@ export default function MobileNav() {
     const pathname = usePathname();
 
     const navLinks = [
+        { href: "/live", label: "Live", icon: "🔴" },
         { href: "/dashboard", label: "Home", icon: "🖥️" },
+        { href: "/admin", label: "Admin", icon: "🛡️" },
         { href: "/upload", label: "Detect", icon: "📤" },
-        { href: "/inventory-mismatch", label: "Inventory", icon: "⚠️" },
-        { href: "/confidence", label: "Conf", icon: "🎯" },
-        { href: "/replay", label: "Replay", icon: "▶️" },
+        { href: "/inventory-mismatch", label: "Alert", icon: "⚠️" },
         { href: "/reports", label: "Reports", icon: "📊" },
-        { href: "/comparison", label: "Compare", icon: "📈" },
-        { href: "/anomaly", label: "Anomaly", icon: "🧠" },
     ];
 
     return (

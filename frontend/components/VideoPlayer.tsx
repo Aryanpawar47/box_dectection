@@ -3,35 +3,37 @@
 import { useRef, useState, useCallback } from "react";
 
 interface Props {
-    onFileSelected: (file: File) => void;
+    onFilesSelected: (files: File[]) => void;
     isLoading?: boolean;
     annotatedImageB64?: string;
 }
 
-export default function VideoPlayer({ onFileSelected, isLoading, annotatedImageB64 }: Props) {
-    const [preview, setPreview] = useState<string | null>(null);
-    const [fileType, setFileType] = useState<"image" | "video" | null>(null);
+export default function VideoPlayer({ onFilesSelected, isLoading, annotatedImageB64 }: Props) {
+    const [previews, setPreviews] = useState<{ url: string; type: "image" | "video"; name: string }[]>([]);
     const [isDragging, setIsDragging] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const handleFile = useCallback(
-        (file: File) => {
-            const url = URL.createObjectURL(file);
-            setPreview(url);
-            setFileType(file.type.startsWith("video/") ? "video" : "image");
-            onFileSelected(file);
+    const handleFiles = useCallback(
+        (files: FileList | File[]) => {
+            const fileArray = Array.from(files);
+            const newPreviews = fileArray.map(file => ({
+                url: URL.createObjectURL(file),
+                type: (file.type.startsWith("video/") ? "video" : "image") as "image" | "video",
+                name: file.name
+            }));
+            setPreviews(newPreviews);
+            onFilesSelected(fileArray);
         },
-        [onFileSelected]
+        [onFilesSelected]
     );
 
     const onDrop = useCallback(
         (e: React.DragEvent) => {
             e.preventDefault();
             setIsDragging(false);
-            const file = e.dataTransfer.files[0];
-            if (file) handleFile(file);
+            if (e.dataTransfer.files.length > 0) handleFiles(e.dataTransfer.files);
         },
-        [handleFile]
+        [handleFiles]
     );
 
     return (
@@ -55,25 +57,35 @@ export default function VideoPlayer({ onFileSelected, isLoading, annotatedImageB
                     ref={inputRef}
                     type="file"
                     accept="image/*,video/*"
+                    multiple
                     className="hidden"
-                    onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
+                    onChange={(e) => e.target.files && handleFiles(e.target.files)}
                 />
-                {preview ? (
-                    fileType === "video" ? (
-                        <video src={preview} controls className="max-h-48 rounded-xl w-full object-contain" />
-                    ) : (
-                        <img src={preview} alt="Preview" className="max-h-48 rounded-xl object-contain" />
-                    )
+                {previews.length > 0 ? (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 w-full">
+                        {previews.map((preview, idx) => (
+                            <div key={idx} className="relative group">
+                                {preview.type === "video" ? (
+                                    <video src={preview.url} className="max-h-32 rounded-xl w-full object-cover border border-slate-700" />
+                                ) : (
+                                    <img src={preview.url} alt="Preview" className="max-h-32 rounded-xl w-full object-cover border border-slate-700" />
+                                )}
+                                <div className="absolute inset-x-0 bottom-0 bg-black/60 p-1 text-[10px] text-white truncate rounded-b-xl opacity-0 group-hover:opacity-100 transition-opacity">
+                                    {preview.name}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 ) : (
                     <>
                         <div className="text-5xl mb-3">📦</div>
-                        <p className="text-slate-300 text-base font-medium">Drop image or video here</p>
-                        <p className="text-slate-500 text-sm mt-1">or click to browse</p>
+                        <p className="text-slate-300 text-base font-medium">Drop images or videos here</p>
+                        <p className="text-slate-500 text-sm mt-1">or click to browse multiple</p>
                         <p className="text-slate-600 text-xs mt-3">Supports JPEG, PNG, MP4, AVI, MOV</p>
                     </>
                 )}
                 {isLoading && (
-                    <div className="absolute inset-0 bg-slate-900/70 rounded-2xl flex items-center justify-center backdrop-blur-sm">
+                    <div className="absolute inset-0 bg-slate-900/70 rounded-2xl flex items-center justify-center backdrop-blur-sm z-10">
                         <div className="flex flex-col items-center gap-3">
                             <div className="w-10 h-10 border-4 border-green-400 border-t-transparent rounded-full animate-spin" />
                             <span className="text-green-300 text-sm font-medium">Detecting boxes…</span>
@@ -82,12 +94,12 @@ export default function VideoPlayer({ onFileSelected, isLoading, annotatedImageB
                 )}
             </div>
 
-            {/* Annotated result */}
+            {/* Annotated result (for the last processed image if any) */}
             {annotatedImageB64 && !isLoading && (
                 <div className="rounded-2xl overflow-hidden border border-green-500/30 bg-slate-900">
                     <div className="px-4 py-2 bg-green-900/30 border-b border-green-500/20">
                         <span className="text-green-300 text-xs font-semibold tracking-wide uppercase">
-                            Detection Result
+                            Last Detection Result
                         </span>
                     </div>
                     <img
